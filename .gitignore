@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# screenshots
+*.png
+!public/**/*.png
+
+# claude/superpowers
+.claude/
+.superpowers/
+.playwright-mcp/
