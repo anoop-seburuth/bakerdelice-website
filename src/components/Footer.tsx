@@ -104,7 +104,7 @@ export default function Footer() {
               alt="Baker's Delice"
               width={120}
               height={50}
-              className="h-[50px] w-auto mb-4"
+              className="h-[50px] w-auto mb-4 invert brightness-200"
             />
             <p className="font-heading text-lg text-santo mb-3">
               Baker&apos;s Delice
