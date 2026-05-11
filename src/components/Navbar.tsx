@@ -43,9 +43,9 @@ export default function Navbar() {
           <Image
             src="/images/logo.png"
             alt="Baker's Delice"
-            width={120}
-            height={40}
-            className="h-10 w-auto invert brightness-200"
+            width={360}
+            height={120}
+            className="h-28 w-auto invert brightness-200"
             priority
           />
         </a>

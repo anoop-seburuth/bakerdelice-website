@@ -102,9 +102,9 @@ export default function Footer() {
             <Image
               src="/images/logo.png"
               alt="Baker's Delice"
-              width={120}
-              height={50}
-              className="h-[50px] w-auto mb-4 invert brightness-200"
+              width={360}
+              height={150}
+              className="h-[150px] w-auto mb-4 invert brightness-200"
             />
             <p className="font-heading text-lg text-santo mb-3">
               Baker&apos;s Delice

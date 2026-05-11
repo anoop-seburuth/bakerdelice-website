@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import SectionHeader from "@/components/SectionHeader";
+import { sendEmail } from "@/app/actions/sendEmail";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export default function Contact() {
     phone: "",
     message: "",
   });
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -18,8 +21,20 @@ export default function Contact() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus("sending");
+    setErrorMsg("");
+
+    const result = await sendEmail(formData);
+
+    if (result.success) {
+      setStatus("success");
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    } else {
+      setStatus("error");
+      setErrorMsg(result.error || "Something went wrong.");
+    }
   };
 
   const inputClasses =
@@ -117,6 +132,7 @@ export default function Contact() {
                   type="text"
                   name="name"
                   placeholder="Your Name"
+                  required
                   value={formData.name}
                   onChange={handleChange}
                   className={inputClasses}
@@ -125,6 +141,7 @@ export default function Contact() {
                   type="email"
                   name="email"
                   placeholder="Your Email"
+                  required
                   value={formData.email}
                   onChange={handleChange}
                   className={inputClasses}
@@ -146,17 +163,29 @@ export default function Contact() {
                 name="message"
                 placeholder="Your Message"
                 rows={4}
+                required
                 value={formData.message}
                 onChange={handleChange}
                 className={inputClasses}
               />
 
+              {/* Status Messages */}
+              {status === "success" && (
+                <p className="text-green-400 text-sm">
+                  Message sent successfully! We&apos;ll get back to you soon.
+                </p>
+              )}
+              {status === "error" && (
+                <p className="text-red-400 text-sm">{errorMsg}</p>
+              )}
+
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full bg-pecan hover:bg-gingerbread text-white py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-pecan/20 text-sm tracking-wide uppercase"
+                disabled={status === "sending"}
+                className="w-full bg-pecan hover:bg-gingerbread text-white py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-pecan/20 text-sm tracking-wide uppercase disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Message
+                {status === "sending" ? "Sending..." : "Send Message"}
               </button>
             </form>
           </motion.div>
